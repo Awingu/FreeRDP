@@ -27,7 +27,7 @@
 #include <winpr/print.h>
 #include <winpr/bitstream.h>
 
-#include <freerdp/log.h>
+//#include <freerdp/log.h>
 #include <freerdp/codec/zgfx.h>
 
 #define TAG FREERDP_TAG("codec")
@@ -283,7 +283,7 @@ static BOOL zgfx_decompress_segment(ZGFX_CONTEXT* zgfx, wStream* stream, size_t 
 							zgfx_GetBits(zgfx, extra);
 							count += zgfx->bits;
 						}
-
+                        printf("Read of distance %d\n", distance);
 						zgfx_history_buffer_ring_read(zgfx, distance, &(zgfx->OutputBuffer[zgfx->OutputCount]), count);
 						zgfx_history_buffer_ring_write(zgfx, &(zgfx->OutputBuffer[zgfx->OutputCount]), count);
 						zgfx->OutputCount += count;
@@ -312,10 +312,34 @@ static BOOL zgfx_decompress_segment(ZGFX_CONTEXT* zgfx, wStream* stream, size_t 
 	return TRUE;
 }
 
+
+//struct _ZGFX_CONTEXT
+//{
+//    BOOL Compressor;
+//
+//    const BYTE* pbInputCurrent;
+//    const BYTE* pbInputEnd;
+//
+//    UINT32 bits;
+//    UINT32 cBitsRemaining;
+//    UINT32 BitsCurrent;
+//    UINT32 cBitsCurrent;
+//
+//    BYTE OutputBuffer[65536];
+//    UINT32 OutputCount;
+//
+//    BYTE HistoryBuffer[2500000];
+//    UINT32 HistoryIndex;
+//    UINT32 HistoryBufferSize;
+//};
+//typedef struct _ZGFX_CONTEXT ZGFX_CONTEXT;
+
 int zgfx_decompress(ZGFX_CONTEXT* zgfx, const BYTE* pSrcData, UINT32 SrcSize, BYTE** ppDstData,
                     UINT32* pDstSize, UINT32 flags)
 {
-	int status = -1;
+	printf("zgfx_decompress zgfx=%p, pSrcData=%p, SrcSize=%u, ppDstData=%p, pDstSize=%p, flags=%u\n", zgfx, pSrcData, SrcSize, ppDstData, pDstSize, flags);
+    printf("zgfx_decompress *zgfx: Compressor=%u pbInputCurrent=%p pbInputEnd=%p bits=%u cBitsRemaining=%u BitsCurrent=%u cBitsCurrent=%u OutputCount=%u HistoryIndex=%u HistoryBufferSize=%u\n", zgfx->Compressor, zgfx->pbInputCurrent, zgfx->pbInputEnd, zgfx->bits, zgfx->cBitsRemaining, zgfx->BitsCurrent, zgfx->cBitsCurrent, zgfx->OutputCount, zgfx->HistoryIndex, zgfx->HistoryBufferSize);
+    int status = -1;
 	BYTE descriptor;
 
 	wStream* stream = Stream_New((BYTE*)pSrcData, SrcSize);
@@ -396,7 +420,7 @@ static BOOL zgfx_compress_segment(ZGFX_CONTEXT* zgfx, wStream* s, const BYTE* pS
 	/* FIXME: Currently compression not implemented. Just copy the raw source */
 	if (!Stream_EnsureRemainingCapacity(s, SrcSize + 1))
 	{
-		WLog_ERR(TAG, "Stream_EnsureRemainingCapacity failed!");
+//		WLog_ERR(TAG, "Stream_EnsureRemainingCapacity failed!");
 		return FALSE;
 	}
 
@@ -432,7 +456,7 @@ int zgfx_compress_to_stream(ZGFX_CONTEXT* zgfx, wStream* sDst, const BYTE* pUnco
 		/* Ensure we have enough space for headers */
 		if (!Stream_EnsureRemainingCapacity(sDst, 12))
 		{
-			WLog_ERR(TAG, "Stream_EnsureRemainingCapacity failed!");
+//			WLog_ERR(TAG, "Stream_EnsureRemainingCapacity failed!");
 			return -1;
 		}
 
@@ -503,11 +527,13 @@ int zgfx_compress(ZGFX_CONTEXT* zgfx, const BYTE* pSrcData, UINT32 SrcSize, BYTE
 
 void zgfx_context_reset(ZGFX_CONTEXT* zgfx, BOOL flush)
 {
+	printf("zgfx_context_new zgfx=%p flush=%u\n", zgfx, flush);
 	zgfx->HistoryIndex = 0;
 }
 
 ZGFX_CONTEXT* zgfx_context_new(BOOL Compressor)
 {
+	printf("zgfx_context_new Compressor=%u", Compressor);
 	ZGFX_CONTEXT* zgfx;
 	zgfx = (ZGFX_CONTEXT*) calloc(1, sizeof(ZGFX_CONTEXT));
 
@@ -523,6 +549,7 @@ ZGFX_CONTEXT* zgfx_context_new(BOOL Compressor)
 
 void zgfx_context_free(ZGFX_CONTEXT* zgfx)
 {
+	printf("zgfx_context_free zgfx=%p\n", zgfx);
 	free(zgfx);
 }
 
