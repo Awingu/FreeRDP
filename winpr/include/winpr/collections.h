@@ -85,6 +85,7 @@ WINPR_API BOOL Queue_Contains(wQueue* queue, void* obj);
 
 WINPR_API BOOL Queue_Enqueue(wQueue* queue, void* obj);
 WINPR_API void* Queue_Dequeue(wQueue* queue);
+WINPR_API int Queue_HelloWorld();
 
 WINPR_API void* Queue_Peek(wQueue* queue);
 

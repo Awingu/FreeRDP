@@ -297,3 +297,8 @@ void Queue_Free(wQueue* queue)
 	free(queue->array);
 	free(queue);
 }
+
+int Queue_HelloWorld() {
+	printf("Hello world from WinPR.\n");
+    return 1337;
+}

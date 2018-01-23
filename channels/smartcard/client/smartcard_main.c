@@ -33,6 +33,11 @@
 #include <freerdp/channels/rdpdr.h>
 
 #include "smartcard_main.h"
+#include "../../rdpdr/client/devman.h"
+
+void smartcard_hello_world(void) {
+	printf("Hello, world! From smartcard lib.\n");
+}
 
 void* smartcard_context_thread(SMARTCARD_CONTEXT* pContext)
 {
@@ -773,3 +778,52 @@ error_device_data:
 	return error;
 }
 
+
+static UINT awingu_register_device(DEVMAN * devman, DEVICE * device) {
+    *((SMARTCARD_DEVICE **)devman) = (SMARTCARD_DEVICE *)device;
+    return 0;
+}
+
+
+static UINT awingu_devman_register_device(DEVMAN* devman, DEVICE* device)
+{
+    void* key = NULL;
+
+    if (!devman || !device)
+        return ERROR_INVALID_PARAMETER;
+
+    device->id = devman->id_sequence++;
+    key = (void*) (size_t) device->id;
+
+    if (!ListDictionary_Add(devman->devices, key, device))
+    {
+        WLog_INFO(TAG,  "ListDictionary_Add failed!");
+        return ERROR_INTERNAL_ERROR;
+    }
+    return CHANNEL_RC_OK;
+}
+
+
+DEVICE * awingu_smartcard_entry(DEVMAN * devman) {
+    wLog * log = WLog_Get(TAG);
+    WLog_SetLogLevel(log, WLOG_DEBUG);
+    WLog_SetLogAppenderType(log, WLOG_APPENDER_CONSOLE);
+    WLog_DBG(TAG, "Test debug log.");
+
+    DEVICE_SERVICE_ENTRY_POINTS entryPoints;
+    entryPoints.device = NULL;
+    entryPoints.devman = devman;
+    entryPoints.rdpcontext = NULL;
+    entryPoints.RegisterDevice = awingu_devman_register_device;
+    int error = smartcard_DeviceServiceEntry(&entryPoints);
+    if(error) {
+        return NULL;
+    }
+    return devman_get_device_by_id(devman, devman->id_sequence - 1);
+}
+
+int awingu_process_irp(IRP * irp) {
+    int error = 0;
+    IFCALLRET(irp->device->IRPRequest, error, irp->device, irp);
+    return error;
+}
