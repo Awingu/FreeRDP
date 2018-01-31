@@ -602,7 +602,13 @@ static LONG smartcard_GetStatusChangeA_Call(SMARTCARD_DEVICE* smartcard,
 	for (index = 0; index < ret.cReaders; index++)
 	{
 		ret.rgReaderStates[index].dwCurrentState = call->rgReaderStates[index].dwCurrentState;
-		ret.rgReaderStates[index].dwEventState = call->rgReaderStates[index].dwEventState;
+		ret.rgReaderStates[index].dwEventState = call->rgReaderStates[index].dwEventState | (((call->rgReaderStates[index].dwEventState & SCARD_STATE_PRESENT) != 0) << 16);
+#if 0
+		if (ret.rgReaderStates[index].dwEventState & SCARD_STATE_UNPOWERED) {
+			//ret.rgReaderStates[index].dwEventState |= SCARD_STATE_INUSE;
+			ret.rgReaderStates[index].dwEventState ^= SCARD_STATE_UNPOWERED;
+		}
+#endif
 		ret.rgReaderStates[index].cbAtr = call->rgReaderStates[index].cbAtr;
 		CopyMemory(&(ret.rgReaderStates[index].rgbAtr), &(call->rgReaderStates[index].rgbAtr), 32);
 	}
@@ -668,7 +674,13 @@ static LONG smartcard_GetStatusChangeW_Call(SMARTCARD_DEVICE* smartcard,
 	for (index = 0; index < ret.cReaders; index++)
 	{
 		ret.rgReaderStates[index].dwCurrentState = call->rgReaderStates[index].dwCurrentState;
-		ret.rgReaderStates[index].dwEventState = call->rgReaderStates[index].dwEventState;
+		ret.rgReaderStates[index].dwEventState = call->rgReaderStates[index].dwEventState | (((call->rgReaderStates[index].dwEventState & SCARD_STATE_PRESENT) != 0) << 16);
+#if 0
+		if (ret.rgReaderStates[index].dwEventState & SCARD_STATE_UNPOWERED) {
+			//ret.rgReaderStates[index].dwEventState |= SCARD_STATE_INUSE;
+			ret.rgReaderStates[index].dwEventState ^= SCARD_STATE_UNPOWERED;
+		}
+#endif
 		ret.rgReaderStates[index].cbAtr = call->rgReaderStates[index].cbAtr;
 		CopyMemory(&(ret.rgReaderStates[index].rgbAtr), &(call->rgReaderStates[index].rgbAtr), 32);
 	}
@@ -1142,7 +1154,7 @@ static LONG smartcard_StatusW_Call(SMARTCARD_DEVICE* smartcard, SMARTCARD_OPERAT
 		if (!call->fmszReaderNamesIsNULL)
 			ret.mszReaderNames = (BYTE*) mszReaderNames;
 
-		ret.cBytes = cchReaderLen;
+		ret.cBytes = cchReaderLen * 2;
 
 		if (call->cbAtrLen)
 			ret.cbAtrLen = cbAtrLen;
