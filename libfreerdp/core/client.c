@@ -1215,7 +1215,7 @@ int freerdp_channels_load_plugin(rdpChannels* channels, rdpSettings* settings, c
 	return freerdp_channels_client_load(channels, settings, entry, data);
 }
 
-CHANNEL_ENTRY_POINTS_FREERDP_EX * awingu_freerdp_channels_client_load_ex(PVIRTUALCHANNELINITEX init, PVIRTUALCHANNELOPENEX open, PVIRTUALCHANNELCLOSEEX close, PVIRTUALCHANNELWRITEEX write)
+void * awingu_freerdp_channels_client_load_ex(PVIRTUALCHANNELINITEX init, PVIRTUALCHANNELOPENEX open, PVIRTUALCHANNELCLOSEEX close, PVIRTUALCHANNELWRITEEX write)
 {
 	CHANNEL_ENTRY_POINTS_FREERDP_EX * EntryPointsEx = calloc(1, sizeof(CHANNEL_ENTRY_POINTS_FREERDP_EX));
 	ZeroMemory(EntryPointsEx, sizeof(CHANNEL_ENTRY_POINTS_FREERDP_EX));

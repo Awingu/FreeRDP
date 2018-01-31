@@ -1867,3 +1867,7 @@ BOOL VCAPITYPE VirtualChannelEntryEx(PCHANNEL_ENTRY_POINTS pEntryPoints, PVOID p
 
 	return TRUE;
 }
+
+FREERDP_API BOOL awingu_rdpdr_virtual_channel_entry(PCHANNEL_ENTRY_POINTS pEntryPoints, PVOID pInitHandle) {
+	return VirtualChannelEntryEx(pEntryPoints, pInitHandle);
+}

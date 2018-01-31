@@ -29,7 +29,7 @@ void devman_unregister_device(DEVMAN* devman, void* key);
 UINT devman_load_device_service(DEVMAN* devman, RDPDR_DEVICE* device, rdpContext* rdpcontext);
 DEVICE* devman_get_device_by_id(DEVMAN* devman, UINT32 id);
 
-DEVMAN* devman_new(rdpdrPlugin* rdpdr);
+FREERDP_API DEVMAN* devman_new(rdpdrPlugin* rdpdr);
 void devman_free(DEVMAN* devman);
 
 #endif /* FREERDP_CHANNEL_RDPDR_CLIENT_DEVMAN_H */

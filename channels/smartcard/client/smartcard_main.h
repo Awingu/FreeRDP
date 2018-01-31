@@ -125,6 +125,10 @@ void smartcard_context_free(SMARTCARD_CONTEXT* pContext);
 UINT smartcard_complete_irp(SMARTCARD_DEVICE* smartcard, IRP* irp);
 UINT smartcard_process_irp(SMARTCARD_DEVICE* smartcard, IRP* irp);
 
+FREERDP_API DEVICE * awingu_smartcard_entry(DEVMAN * devman);
+FREERDP_API int awingu_process_irp(IRP * irp);
+FREERDP_API int awingu_onmessage(BYTE * buffer, size_t size, DEVMAN * devman);
+
 LONG smartcard_irp_device_control_decode(SMARTCARD_DEVICE* smartcard, SMARTCARD_OPERATION* operation);
 LONG smartcard_irp_device_control_call(SMARTCARD_DEVICE* smartcard, SMARTCARD_OPERATION* operation);
 

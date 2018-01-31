@@ -1360,6 +1360,7 @@ LONG smartcard_unpack_get_status_change_a_call(SMARTCARD_DEVICE* smartcard, wStr
 
 			Stream_Read_UINT32(s, szReaderNdrPtr); /* szReaderNdrPtr (4 bytes) */
 			Stream_Read_UINT32(s, readerState->dwCurrentState); /* dwCurrentState (4 bytes) */
+			readerState->dwCurrentState &= (SCARD_STATE_UNAWARE | SCARD_STATE_IGNORE | SCARD_STATE_UNAVAILABLE | SCARD_STATE_EMPTY | SCARD_STATE_PRESENT | SCARD_STATE_ATRMATCH | SCARD_STATE_EXCLUSIVE | SCARD_STATE_INUSE | SCARD_STATE_MUTE);
 			Stream_Read_UINT32(s, readerState->dwEventState); /* dwEventState (4 bytes) */
 			Stream_Read_UINT32(s, readerState->cbAtr); /* cbAtr (4 bytes) */
 			Stream_Read(s, readerState->rgbAtr, 32); /* rgbAtr [0..32] (32 bytes) */
@@ -1527,6 +1528,7 @@ LONG smartcard_unpack_get_status_change_w_call(SMARTCARD_DEVICE* smartcard, wStr
 
 			Stream_Read_UINT32(s, szReaderNdrPtr); /* (4 bytes) */
 			Stream_Read_UINT32(s, readerState->dwCurrentState); /* dwCurrentState (4 bytes) */
+			readerState->dwCurrentState &= (SCARD_STATE_UNAWARE | SCARD_STATE_IGNORE | SCARD_STATE_UNAVAILABLE | SCARD_STATE_EMPTY | SCARD_STATE_PRESENT | SCARD_STATE_ATRMATCH | SCARD_STATE_EXCLUSIVE | SCARD_STATE_INUSE | SCARD_STATE_MUTE);
 			Stream_Read_UINT32(s, readerState->dwEventState); /* dwEventState (4 bytes) */
 			Stream_Read_UINT32(s, readerState->cbAtr); /* cbAtr (4 bytes) */
 			Stream_Read(s, readerState->rgbAtr, 32); /* rgbAtr [0..32] (32 bytes) */

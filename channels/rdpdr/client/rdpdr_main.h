@@ -79,5 +79,6 @@ struct rdpdr_plugin
 };
 
 UINT rdpdr_send(rdpdrPlugin* rdpdr, wStream* s);
+FREERDP_API BOOL awingu_rdpdr_virtual_channel_entry(PCHANNEL_ENTRY_POINTS pEntryPoints, PVOID pInitHandle);
 
 #endif /* FREERDP_CHANNEL_RDPDR_CLIENT_MAIN_H */
