@@ -34,6 +34,7 @@
 
 #include "smartcard_main.h"
 #include "../../rdpdr/client/devman.h"
+#include "../../rdpdr/client/irp.h"
 
 void smartcard_hello_world(void) {
 	printf("Hello, world! From smartcard lib.\n");
