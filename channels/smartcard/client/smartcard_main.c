@@ -780,12 +780,6 @@ error_device_data:
 }
 
 
-static UINT awingu_register_device(DEVMAN * devman, DEVICE * device) {
-    *((SMARTCARD_DEVICE **)devman) = (SMARTCARD_DEVICE *)device;
-    return 0;
-}
-
-
 static UINT awingu_devman_register_device(DEVMAN* devman, DEVICE* device)
 {
     void* key = NULL;
@@ -825,10 +819,6 @@ int awingu_process_irp(IRP * irp) {
 }
 
 int awingu_onmessage(BYTE * buffer, size_t size, DEVMAN * devman) {
-	wLog * log = WLog_Get(TAG);
-	WLog_SetLogLevel(log, WLOG_DEBUG);
-	WLog_SetLogAppenderType(log, WLOG_APPENDER_CONSOLE);
-	WLog_DBG(TAG, "Test debug log.");
 	BYTE * copy = malloc(size);
 	memcpy(copy, buffer, size);
 	wStream * stream = Stream_New(copy, size);

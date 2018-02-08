@@ -1746,34 +1746,34 @@ LONG smartcard_irp_device_control_decode(SMARTCARD_DEVICE* smartcard,
 			break;
 	}
 
-	if ((ioControlCode != SCARD_IOCTL_ACCESSSTARTEDEVENT) &&
-	    (ioControlCode != SCARD_IOCTL_RELEASESTARTEDEVENT))
-	{
-		offset = (RDPDR_DEVICE_IO_REQUEST_LENGTH + RDPDR_DEVICE_IO_CONTROL_REQ_HDR_LENGTH);
-		smartcard_unpack_read_size_align(smartcard, irp->input,
-		                                 Stream_GetPosition(irp->input) - offset, 8);
-	}
-
-	if (Stream_GetPosition(irp->input) < Stream_Length(irp->input))
-	{
-		SIZE_T difference;
-		difference = Stream_Length(irp->input) - Stream_GetPosition(irp->input);
-		WLog_WARN(TAG,
-		          "IRP was not fully parsed %s (0x%08"PRIX32"): Actual: %"PRIuz", Expected: %"PRIuz", Difference: %"PRIuz"",
-		          smartcard_get_ioctl_string(ioControlCode, TRUE), ioControlCode,
-		          Stream_GetPosition(irp->input), Stream_Length(irp->input), difference);
-		winpr_HexDump(TAG, WLOG_WARN, Stream_Pointer(irp->input), difference);
-	}
-
-	if (Stream_GetPosition(irp->input) > Stream_Length(irp->input))
-	{
-		SIZE_T difference;
-		difference = Stream_GetPosition(irp->input) - Stream_Length(irp->input);
-		WLog_WARN(TAG,
-		          "IRP was parsed beyond its end %s (0x%08"PRIX32"): Actual: %"PRIuz", Expected: %"PRIuz", Difference: %"PRIuz"",
-		          smartcard_get_ioctl_string(ioControlCode, TRUE), ioControlCode,
-		          Stream_GetPosition(irp->input), Stream_Length(irp->input), difference);
-	}
+//	if ((ioControlCode != SCARD_IOCTL_ACCESSSTARTEDEVENT) &&
+//	    (ioControlCode != SCARD_IOCTL_RELEASESTARTEDEVENT))
+//	{
+//		offset = (RDPDR_DEVICE_IO_REQUEST_LENGTH + RDPDR_DEVICE_IO_CONTROL_REQ_HDR_LENGTH);
+//		smartcard_unpack_read_size_align(smartcard, irp->input,
+//		                                 Stream_GetPosition(irp->input) - offset, 8);
+//	}
+//
+//	if (Stream_GetPosition(irp->input) < Stream_Length(irp->input))
+//	{
+//		SIZE_T difference;
+//		difference = Stream_Length(irp->input) - Stream_GetPosition(irp->input);
+//		WLog_WARN(TAG,
+//		          "IRP was not fully parsed %s (0x%08"PRIX32"): Actual: %"PRIuz", Expected: %"PRIuz", Difference: %"PRIuz"",
+//		          smartcard_get_ioctl_string(ioControlCode, TRUE), ioControlCode,
+//		          Stream_GetPosition(irp->input), Stream_Length(irp->input), difference);
+//		winpr_HexDump(TAG, WLOG_WARN, Stream_Pointer(irp->input), difference);
+//	}
+//
+//	if (Stream_GetPosition(irp->input) > Stream_Length(irp->input))
+//	{
+//		SIZE_T difference;
+//		difference = Stream_GetPosition(irp->input) - Stream_Length(irp->input);
+//		WLog_WARN(TAG,
+//		          "IRP was parsed beyond its end %s (0x%08"PRIX32"): Actual: %"PRIuz", Expected: %"PRIuz", Difference: %"PRIuz"",
+//		          smartcard_get_ioctl_string(ioControlCode, TRUE), ioControlCode,
+//		          Stream_GetPosition(irp->input), Stream_Length(irp->input), difference);
+//	}
 
 	if (status != SCARD_S_SUCCESS)
 	{
