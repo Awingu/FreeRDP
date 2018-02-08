@@ -806,11 +806,6 @@ static UINT awingu_devman_register_device(DEVMAN* devman, DEVICE* device)
 
 
 DEVICE * awingu_smartcard_entry(DEVMAN * devman) {
-    /*wLog * log = WLog_Get(TAG);
-    WLog_SetLogLevel(log, WLOG_DEBUG);
-    WLog_SetLogAppenderType(log, WLOG_APPENDER_CONSOLE);*/
-    WLog_DBG(TAG, "Test debug log.");
-
     DEVICE_SERVICE_ENTRY_POINTS entryPoints;
     entryPoints.device = NULL;
     entryPoints.devman = devman;
