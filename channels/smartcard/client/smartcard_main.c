@@ -818,7 +818,7 @@ int awingu_process_irp(IRP * irp) {
     return error;
 }
 
-int awingu_onmessage(BYTE * buffer, size_t size, DEVMAN * devman) {
+int awingu_onmessage(BYTE * buffer, int size, DEVMAN * devman) {
 	BYTE * copy = malloc(size);
 	memcpy(copy, buffer, size);
 	wStream * stream = Stream_New(copy, size);
