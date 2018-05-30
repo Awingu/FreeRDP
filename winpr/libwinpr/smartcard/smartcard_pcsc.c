@@ -1719,7 +1719,10 @@ WINSCARDAPI LONG WINAPI PCSC_SCardStatus_Internal(SCARDHANDLE hCard,
 
 	/* Make sure the last byte is set */
 	if (readerNames)
-		readerNames[pcsc_cchReaderLen] = '\0';
+	    if (unicode)
+	        readerNames[pcsc_cchReaderLen * 2] = '\0';
+	    else
+            readerNames[pcsc_cchReaderLen] = '\0';
 
 	return status;
 out_fail:
